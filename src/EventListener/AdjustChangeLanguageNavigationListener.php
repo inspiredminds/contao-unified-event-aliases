@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace InspiredMinds\ContaoUnifiedEventAliases\EventListener;
 
+use Contao\CalendarEventsModel;
 use Contao\CalendarModel;
 use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\Input;
@@ -48,7 +49,7 @@ class AdjustChangeLanguageNavigationListener
         }
 
         // Check if unified aliases feature is enabled for this event
-        $currentEvent = CalendarModel::findOneByAlias($alias);
+        $currentEvent = CalendarEventsModel::findOneByAlias($alias);
 
         if (null === $currentEvent) {
             return;
@@ -82,6 +83,6 @@ class AdjustChangeLanguageNavigationListener
         }
 
         // Override the "items" URL attribute with the alias of the main event
-        $event->getUrlParameterBag()->setUrlAttribute('items', $mainEvent->alias);
+        $event->getUrlParameterBag()->setUrlAttribute('events', $mainEvent->alias);
     }
 }

@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace InspiredMinds\ContaoUnifiedEventAliases\Controller\FrontendModule;
 
 use Contao\CalendarEventsModel;
-use Contao\CalendarModel;
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\CoreBundle\ServiceAnnotation\FrontendModule;
 use Contao\Events;
@@ -53,7 +52,7 @@ class EventReaderModuleController extends ModuleEventReader
 
     private function overrideItems(): void
     {
-        $event = CalendarModel::findOneByAlias(Input::get('items', false, true));
+        $event = CalendarEventsModel::findOneByAlias(Input::get('events', false, true));
 
         // Check if this is a valid event alias
         if (null === $event) {
@@ -83,7 +82,7 @@ class EventReaderModuleController extends ModuleEventReader
         }
 
         // Override the "items" variable
-        Input::setGet('items', $actualEvent->alias);
+        Input::setGet('events', $actualEvent->alias);
     }
 
     private function redirectToMainEventUrl(CalendarEventsModel $event): void
