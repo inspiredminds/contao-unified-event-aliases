@@ -3,11 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Contao Unified Event Aliases extension.
- *
- * (c) inspiredminds
- *
- * @license LGPL-3.0-or-later
+ * (c) INSPIRED MINDS
  */
 
 namespace InspiredMinds\ContaoUnifiedEventAliases\ContaoManager;
@@ -17,6 +13,7 @@ use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
 use InspiredMinds\ContaoUnifiedEventAliases\ContaoUnifiedEventAliasesBundle;
+use Terminal42\ChangeLanguage\Terminal42ChangeLanguageBundle;
 
 class Plugin implements BundlePluginInterface
 {
@@ -26,7 +23,7 @@ class Plugin implements BundlePluginInterface
             BundleConfig::create(ContaoUnifiedEventAliasesBundle::class)
                 ->setLoadAfter([
                     ContaoCalendarBundle::class,
-                    'changelanguage',
+                    Terminal42ChangeLanguageBundle::class,
                 ]),
         ];
     }

@@ -3,32 +3,23 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Contao Unified Event Aliases extension.
- *
- * (c) inspiredminds
- *
- * @license LGPL-3.0-or-later
+ * (c) INSPIRED MINDS
  */
 
 namespace InspiredMinds\ContaoUnifiedEventAliases\EventListener;
 
 use Contao\CalendarEventsModel;
 use Contao\CalendarModel;
-use Contao\CoreBundle\ServiceAnnotation\Hook;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\Input;
 use InspiredMinds\ContaoUnifiedEventAliases\UnifiedEventAliases;
 use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 
-/**
- * @Hook("changelanguageNavigation", priority=-100)
- */
+#[AsHook('changelanguageNavigation', priority: -100)]
 class AdjustChangeLanguageNavigationListener
 {
-    private $unifiedAliases;
-
-    public function __construct(UnifiedEventAliases $unifiedAliases)
+    public function __construct(private readonly UnifiedEventAliases $unifiedAliases)
     {
-        $this->unifiedAliases = $unifiedAliases;
     }
 
     public function __invoke(ChangelanguageNavigationEvent $event): void
@@ -62,7 +53,7 @@ class AdjustChangeLanguageNavigationListener
         // Get the actual event for the current language
         $actualEvent = $this->unifiedAliases->getEventForCurrentLanguage($currentEvent);
 
-        if (null === $actualEvent) {
+        if (!$actualEvent) {
             return;
         }
 
@@ -74,7 +65,7 @@ class AdjustChangeLanguageNavigationListener
         // Get the main event for the current event
         $mainEvent = $this->unifiedAliases->getMainEvent($currentEvent);
 
-        if (null === $mainEvent) {
+        if (!$mainEvent) {
             if (!$this->unifiedAliases->isMainEvent($currentEvent)) {
                 return;
             }

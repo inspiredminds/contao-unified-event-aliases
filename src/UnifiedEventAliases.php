@@ -3,11 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Contao Unified Event Aliases extension.
- *
- * (c) inspiredminds
- *
- * @license LGPL-3.0-or-later
+ * (c) INSPIRED MINDS
  */
 
 namespace InspiredMinds\ContaoUnifiedEventAliases;
@@ -19,11 +15,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class UnifiedEventAliases
 {
-    private $requestStack;
-
-    public function __construct(RequestStack $requestStack)
+    public function __construct(private readonly RequestStack $requestStack)
     {
-        $this->requestStack = $requestStack;
     }
 
     /**
@@ -63,7 +56,7 @@ class UnifiedEventAliases
 
         $request = $this->requestStack->getCurrentRequest();
 
-        if (null === $request) {
+        if (!$request) {
             throw new \RuntimeException('Could not get current request.');
         }
 
@@ -87,7 +80,7 @@ class UnifiedEventAliases
     /**
      * Returns the main event for the given event, if applicable.
      */
-    public function getMainEvent(CalendarEventsModel $event): ?CalendarEventsModel
+    public function getMainEvent(CalendarEventsModel $event): CalendarEventsModel|null
     {
         if (0 === (int) $event->languageMain) {
             return null;
@@ -99,13 +92,13 @@ class UnifiedEventAliases
     /**
      * Returns the associated event for the given event and language.
      */
-    public function getEventForLanguage(CalendarEventsModel $event, string $language): ?CalendarEventsModel
+    public function getEventForLanguage(CalendarEventsModel $event, string $language): CalendarEventsModel|null
     {
         $searchId = (int) ($event->languageMain ?: $event->id);
         $t = CalendarEventsModel::getTable();
         $articles = CalendarEventsModel::findBy(
             ["($t.id = ? OR $t.languageMain = ?)"],
-            [$searchId, $searchId]
+            [$searchId, $searchId],
         );
 
         if (null === $articles) {
@@ -136,11 +129,11 @@ class UnifiedEventAliases
     /**
      * Returns the associated event for the given event and the current language.
      */
-    public function getEventForCurrentLanguage(CalendarEventsModel $event): ?CalendarEventsModel
+    public function getEventForCurrentLanguage(CalendarEventsModel $event): CalendarEventsModel|null
     {
         $request = $this->requestStack->getCurrentRequest();
 
-        if (null === $request) {
+        if (!$request) {
             throw new \RuntimeException('Could not get current request.');
         }
 

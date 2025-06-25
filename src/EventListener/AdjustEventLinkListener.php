@@ -3,36 +3,30 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Contao Unified Event Aliases extension.
- *
- * (c) inspiredminds
- *
- * @license LGPL-3.0-or-later
+ * (c) INSPIRED MINDS
  */
 
 namespace InspiredMinds\ContaoUnifiedEventAliases\EventListener;
 
 use Contao\CalendarEventsModel;
-use Contao\CoreBundle\ServiceAnnotation\Hook;
-use Contao\Events;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
+use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\Template;
 use InspiredMinds\ContaoUnifiedEventAliases\UnifiedEventAliases;
+use Symfony\Component\Routing\Exception\ExceptionInterface;
 
-/**
- * @Hook("parseTemplate")
- */
+#[AsHook('parseTemplate')]
 class AdjustEventLinkListener
 {
-    private $unifiedEventAliases;
-
-    public function __construct(UnifiedEventAliases $unifiedEventAliases)
-    {
-        $this->unifiedEventAliases = $unifiedEventAliases;
+    public function __construct(
+        private readonly UnifiedEventAliases $unifiedEventAliases,
+        private readonly ContentUrlGenerator $contentUrlGenerator,
+    ) {
     }
 
     public function __invoke(Template $template): void
     {
-        if (0 !== strpos($template->getName(), 'event_')) {
+        if (!str_starts_with($template->getName(), 'event_')) {
             return;
         }
 
@@ -44,7 +38,7 @@ class AdjustEventLinkListener
 
         $mainEvent = $this->unifiedEventAliases->getMainEvent($event);
 
-        if (null === $mainEvent) {
+        if (!$mainEvent) {
             return;
         }
 
@@ -53,6 +47,10 @@ class AdjustEventLinkListener
         $event->id = 'clone-'.$template->id;
         $event->alias = $mainEvent->alias;
 
-        $template->href = Events::generateEventUrl($event);
+        try {
+            $template->href = $template->imageHref = $this->contentUrlGenerator->generate($event);
+        } catch (ExceptionInterface) {
+            // noop
+        }
     }
 }

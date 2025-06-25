@@ -3,23 +3,17 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Contao Unified Event Aliases extension.
- *
- * (c) inspiredminds
- *
- * @license LGPL-3.0-or-later
+ * (c) INSPIRED MINDS
  */
 
 namespace InspiredMinds\ContaoUnifiedEventAliases\EventListener;
 
 use Contao\CalendarModel;
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
-use Contao\CoreBundle\ServiceAnnotation\Callback;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
 
-/**
- * @Callback(table="tl_calendar", target="config.onload", priority=-32)
- */
+#[AsCallback('tl_calendar', 'config.onload', priority: -32)]
 class AdjustCalendarDcaListener
 {
     public function __invoke(DataContainer $dc): void

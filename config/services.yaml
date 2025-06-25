@@ -4,5 +4,5 @@ services:
         autoconfigure: true
     
     InspiredMinds\ContaoUnifiedEventAliases\:
-        resource: ../../
-        exclude: ../../{Resources}
+        resource: ../src/
+        exclude: ../src/{ContaoManager,DependencyInjection,ContaoUnifiedEventAliasesBundle.php}
