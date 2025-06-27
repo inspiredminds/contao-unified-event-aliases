@@ -23,10 +23,6 @@ class ModuleEventreaderOptionsCallback
         $options = [];
         $modules = $this->db->fetchAllAssociative("SELECT m.id, m.name, t.name AS theme FROM tl_module m LEFT JOIN tl_theme t ON m.pid=t.id WHERE m.type LIKE 'eventreader%' ORDER BY t.name, m.name");
 
-        if (false === $modules) {
-            return $options;
-        }
-
         foreach ($modules as $module) {
             $options[$module['theme']][$module['id']] = $module['name'].' (ID '.$module['id'].')';
         }

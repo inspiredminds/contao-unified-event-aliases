@@ -93,9 +93,7 @@ class EventReaderModuleController extends ModuleEventReader
 
     private function redirectToMainEventUrl(CalendarEventsModel $event): void
     {
-        $mainEvent = $this->unifiedAliases->getMainEvent($event);
-
-        if (!$mainEvent) {
+        if (!$mainEvent = $this->unifiedAliases->getMainEvent($event)) {
             return;
         }
 

@@ -24,25 +24,19 @@ class AdjustChangeLanguageNavigationListener
 
     public function __invoke(ChangelanguageNavigationEvent $event): void
     {
-        $alias = Input::get('auto_item', false, true);
-
-        if (empty($alias)) {
+        if (!$alias = Input::get('auto_item', false, true)) {
             return;
         }
 
         global $objPage;
 
-        $calendars = CalendarModel::findBy('jumpTo', $objPage->id);
-
         // Check if any calendars have this page as its target page
-        if (null === $calendars) {
+        if (!$calendars = CalendarModel::findBy('jumpTo', $objPage->id)) {
             return;
         }
 
         // Check if unified aliases feature is enabled for this event
-        $currentEvent = CalendarEventsModel::findOneByAlias($alias);
-
-        if (null === $currentEvent) {
+        if (!$currentEvent = CalendarEventsModel::findOneByAlias($alias)) {
             return;
         }
 
@@ -51,9 +45,7 @@ class AdjustChangeLanguageNavigationListener
         }
 
         // Get the actual event for the current language
-        $actualEvent = $this->unifiedAliases->getEventForCurrentLanguage($currentEvent);
-
-        if (!$actualEvent) {
+        if (!$actualEvent = $this->unifiedAliases->getEventForCurrentLanguage($currentEvent)) {
             return;
         }
 

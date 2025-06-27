@@ -36,9 +36,7 @@ class AdjustEventLinkListener
             return;
         }
 
-        $mainEvent = $this->unifiedEventAliases->getMainEvent($event);
-
-        if (!$mainEvent) {
+        if (!$mainEvent = $this->unifiedEventAliases->getMainEvent($event)) {
             return;
         }
 
