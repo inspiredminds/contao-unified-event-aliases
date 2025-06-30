@@ -40,9 +40,7 @@ class AdjustEventLinkListener
             return;
         }
 
-        $event->preventSaving();
-
-        $event->id = 'clone-'.$template->id;
+        $event = $event->cloneDetached();
         $event->alias = $mainEvent->alias;
 
         try {

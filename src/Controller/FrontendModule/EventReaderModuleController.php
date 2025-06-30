@@ -97,9 +97,7 @@ class EventReaderModuleController extends ModuleEventReader
             return;
         }
 
-        $event->preventSaving();
-
-        $event->id = 'clone-'.$event->id;
+        $event = $event->cloneDetached();
         $event->alias = $mainEvent->alias;
 
         throw new RedirectResponseException($this->contentUrlGenerator->generate($event, [], UrlGeneratorInterface::ABSOLUTE_URL), Response::HTTP_MOVED_PERMANENTLY);
