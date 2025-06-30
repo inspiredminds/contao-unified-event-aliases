@@ -19,4 +19,7 @@ Assuming that the language settings of your calendars are already properly set u
 
 ## Attributions
 
-Development funded by [interAKTIV.net GmbH](https://www.interaktiv.net/).
+Development funded by:
+
+* [interAKTIV.net GmbH](https://www.interaktiv.net/).
+* [priint Group | WERK II](https://www.priint.com/).
