@@ -50,7 +50,7 @@ class AdjustChangeLanguageNavigationListener
         }
 
         // Check if this event is actually allowed here
-        if (!\in_array((int) $actualEvent->pid, array_map('intval', $calendars->fetchEach('id')), true)) {
+        if (!\in_array((int) $actualEvent->pid, array_map(intval(...), $calendars->fetchEach('id')), true)) {
             return;
         }
 

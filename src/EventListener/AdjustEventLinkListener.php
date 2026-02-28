@@ -44,7 +44,7 @@ class AdjustEventLinkListener
         $event->alias = $mainEvent->alias;
 
         try {
-            $template->href = $template->imageHref = $this->contentUrlGenerator->generate($event);
+            $template->href = $this->contentUrlGenerator->generate($event);
         } catch (ExceptionInterface) {
             // noop
         }
